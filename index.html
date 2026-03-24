@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome | Farid Portfolio</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Kanit:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        /* โทนสีพื้นหลังดาร์กบลู (Dark Blue Theme) */
+        body {
+            margin: 0; padding: 0;
+            background: radial-gradient(circle at center, #1e3a8a 0%, #020617 100%);
+            height: 100vh;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            font-family: 'Inter', sans-serif; overflow: hidden;
+            color: #f8fafc;
+        }
+
+        .intro-content {
+            display: flex; flex-direction: column; align-items: center; gap: 30px;
+            width: 100%; max-width: 800px;
+        }
+
+        /* กลุ่มไอคอน 3 ตัว */
+        .intro-icons { display: flex; gap: 20px; }
+
+        .icon-glow {
+            width: 60px; height: 60px; background: rgba(15, 23, 42, 0.6); border-radius: 50%;
+            display: flex; justify-content: center; align-items: center; font-size: 1.5rem; color: #60a5fa;
+            border: 1px solid rgba(96, 165, 250, 0.5);
+            box-shadow: 0 0 15px rgba(96, 165, 250, 0.3), inset 0 0 10px rgba(96, 165, 250, 0.2);
+            opacity: 0; transform: scale(0.5) translateY(20px);
+            animation: popInIcon 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        .icon-glow:nth-child(1) { animation-delay: 0.2s; }
+        .icon-glow:nth-child(2) { animation-delay: 0.4s; }
+        .icon-glow:nth-child(3) { animation-delay: 0.6s; }
+
+        /* คอนเทนเนอร์ของข้อความต้อนรับ */
+        .intro-title {
+            font-weight: 900; font-size: 2.8rem; text-align: center; line-height: 1.4; margin: 0;
+            width: 100%;
+        }
+
+        /* ข้อความบน: สไลด์มาจากขวา */
+        .text-slide-right {
+            display: block;
+            color: #e0f2fe;
+            opacity: 0;
+            transform: translateX(100px);
+            animation: slideInFromRight 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            animation-delay: 1s; 
+        }
+
+        /* ข้อความล่าง: สไลด์มาจากซ้าย */
+        .text-slide-left {
+            display: block;
+            color: #38bdf8;
+            text-shadow: 0 0 20px rgba(56, 189, 248, 0.5);
+            opacity: 0;
+            transform: translateX(-100px);
+            animation: slideInFromLeft 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            animation-delay: 1.2s; 
+        }
+
+        /* ป้าย URL สีฟ้า */
+        .intro-url-container {
+            display: flex; align-items: center; gap: 10px;
+            background: rgba(15, 23, 42, 0.8); border: 2px solid #38bdf8; border-radius: 50px;
+            padding: 10px 30px; color: #38bdf8; font-family: 'Kanit', sans-serif; font-size: 1rem; font-weight: 600;
+            opacity: 0; transform: translateY(20px);
+            animation: popUpText 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, pulseGlow 2s infinite ease-in-out 2s;
+            animation-delay: 1.6s; 
+        }
+
+        /* --- สไตล์สำหรับลูกเล่นพิมพ์ดีด --- */
+        #typewriter-text {
+            display: inline-block;
+            min-width: 105px; /* ล็อกความกว้างของคำว่า Farid Cheloh ไว้ กล่องจะได้ไม่หด */
+            text-align: left;
+            border-right: 2px solid #38bdf8; /* ทำเป็นรูปเคอร์เซอร์ */
+            padding-right: 2px;
+            animation: blinkCursor 0.8s infinite step-end;
+        }
+
+        /* --- Keyframes --- */
+        @keyframes popInIcon {
+            0% { opacity: 0; transform: scale(0.5) translateY(30px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        @keyframes slideInFromRight {
+            0% { opacity: 0; transform: translateX(150px); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes slideInFromLeft {
+            0% { opacity: 0; transform: translateX(-150px); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes popUpText {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 15px rgba(56, 189, 248, 0.3); border-color: #38bdf8; }
+            50% { box-shadow: 0 0 25px rgba(56, 189, 248, 0.8); border-color: #7dd3fc; }
+        }
+        /* แอนิเมชันเคอร์เซอร์กะพริบ */
+        @keyframes blinkCursor {
+            0%, 100% { border-color: transparent; }
+            50% { border-color: #38bdf8; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="intro-content">
+        <div class="intro-icons">
+            <div class="icon-glow"><i class="fa-solid fa-code"></i></div>
+            <div class="icon-glow"><i class="fa-solid fa-user"></i></div>
+            <div class="icon-glow"><i class="fa-brands fa-github"></i></div>
+        </div>
+        
+        <h2 class="intro-title">
+            <span class="text-slide-right">Welcome To My</span>
+            <span class="text-slide-left">Portfolio Website</span>
+        </h2>
+        
+        <div class="intro-url-container">
+            <i class="fa-solid fa-globe globe-icon"></i>
+            <span id="typewriter-text"></span>
+        </div>
+    </div>
+
+    <script>
+        // --- ระบบพิมพ์ดีด (Typewriter Effect) ---
+        const textToType = "Farid Cheloh";
+        const targetSpan = document.getElementById('typewriter-text');
+        let charIndex = 0;
+
+        // รอ 1.8 วินาที (ให้กล่องเด้งขึ้นมาก่อน) แล้วค่อยเริ่มพิมพ์
+        setTimeout(() => {
+            const typingInterval = setInterval(() => {
+                if (charIndex < textToType.length) {
+                    targetSpan.textContent += textToType.charAt(charIndex);
+                    charIndex++;
+                } else {
+                    clearInterval(typingInterval); // พิมพ์ครบแล้วสั่งหยุด
+                }
+            }, 100); // 100 = ความเร็วในการพิมพ์ (มิลลิวินาทีต่อตัวอักษร)
+        }, 1800);
+
+        // ให้เวลาแอนิเมชันทำงานทั้งหมด 4.8 วินาที แล้วดึงเข้าหน้า home.html
+        setTimeout(() => {
+            window.location.href = 'home.html';
+        }, 4800);
+    </script>
+
+</body>
+</html>
