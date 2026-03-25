@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const contactForm = document.querySelector('.custom-form');
     if (contactForm) {
         contactForm.addEventListener('submit', (e) => {
-            // ปล่อยให้ Formspree ทำงานตามปกติ ไม่ต้อง e.preventDefault()
+            // ปล่อยให้ Formspree ทำงานตามปกติ
         });
     }
 
@@ -183,7 +183,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const themeBtn = document.getElementById('theme-toggle');
     const body = document.body;
     
-    // เช็กค่าตอนโหลดหน้าเว็บ
     if (localStorage.getItem('theme') === 'light') {
         body.classList.add('light-mode');
         if(themeBtn) {
@@ -195,7 +194,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // ตอนกดปุ่มสลับโหมด
     if (themeBtn) {
         themeBtn.addEventListener('click', (e) => {
             e.preventDefault(); 
@@ -218,7 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- 7. ระบบ Portfolio Tabs (สลับ Projects / Certifications / Activities) ---
+    // --- 7. ระบบ Portfolio Tabs ---
     const tabBtns = document.querySelectorAll('.tab-btn');
     const tabContents = document.querySelectorAll('.tab-content');
 
@@ -232,18 +230,19 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- 8. ระบบ Modal ป๊อปอัปแกลเลอรี (โปรเจกต์ & รูปกิจกรรม) ---
+    // --- 8. ระบบ Modal ป๊อปอัปแกลเลอรี (ครบวงจร) ---
     const modal = document.getElementById('project-modal');
     const closeModalBtn = document.getElementById('close-modal');
     const projectCards = document.querySelectorAll('.open-modal-btn');
     const activityImgs = document.querySelectorAll('.activity-img-click');
+    const certBtns = document.querySelectorAll('.cert-view-btn'); // 🟢 สำหรับปุ่ม View Full ของเกียรติบัตร
     
     const modalImg = document.getElementById('modal-img');
     const modalTitle = document.getElementById('modal-title');
     const modalDesc = document.getElementById('modal-desc');
     const modalTech = document.getElementById('modal-tech');
     const modalCounter = document.getElementById('modal-counter');
-    const modalBody = document.getElementById('modal-text-content'); // 🟢 เปลี่ยนมาชี้ที่ ID ชัวร์ๆ
+    const modalBody = document.getElementById('modal-text-content'); 
     const prevBtn = document.querySelector('.prev-btn');
     const nextBtn = document.querySelector('.next-btn');
     
@@ -251,7 +250,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentImgIndex = 0; 
 
     if(modal) {
-        // --- 8.1 การทำงานเมื่อกด การ์ดโปรเจกต์ (มีข้อความ) ---
+        // --- 8.1 เปิดจากการ์ดโปรเจกต์ (มีข้อความ) ---
         projectCards.forEach(card => {
             card.addEventListener('click', () => {
                 if (modalBody) modalBody.style.display = 'block'; 
@@ -277,58 +276,62 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 updateGallery();
-
-                if(projectImages.length > 1) {
-                    prevBtn.classList.add('show');
-                    nextBtn.classList.add('show');
-                } else {
-                    prevBtn.classList.remove('show');
-                    nextBtn.classList.remove('show');
-                }
-
+                checkNavButtons();
                 modal.classList.add('show');
                 document.body.style.overflow = 'hidden'; 
             });
         });
 
-        // --- 8.2 การทำงานเมื่อกด รูปภาพกิจกรรม (ซ่อนข้อความ) ---
+        // --- 8.2 เปิดจากรูปภาพกิจกรรม (ไม่มีข้อความ) ---
         activityImgs.forEach((img, index) => {
             img.addEventListener('click', () => {
                 if (modalBody) modalBody.style.display = 'none'; 
-
-                // ดึง src ของรูปกิจกรรมทั้งหมดมาทำสไลด์
                 projectImages = Array.from(activityImgs).map(actImg => actImg.getAttribute('src'));
                 currentImgIndex = index; 
-
                 updateGallery();
-
-                if(projectImages.length > 1) {
-                    prevBtn.classList.add('show');
-                    nextBtn.classList.add('show');
-                } else {
-                    prevBtn.classList.remove('show');
-                    nextBtn.classList.remove('show');
-                }
-
+                checkNavButtons();
                 modal.classList.add('show');
                 document.body.style.overflow = 'hidden'; 
             });
         });
 
-        // --- 🖼️ ฟังก์ชันอัปเดตรูปและตัวนับ ---
+        // --- 8.3 🟢 เปิดจากปุ่ม View Full เกียรติบัตร (ไม่มีข้อความ) 🟢 ---
+        certBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (modalBody) modalBody.style.display = 'none'; 
+                
+                const certImgSrc = btn.getAttribute('data-img');
+                projectImages = [certImgSrc]; 
+                currentImgIndex = 0; 
+
+                updateGallery();
+                checkNavButtons();
+                modal.classList.add('show');
+                document.body.style.overflow = 'hidden'; 
+            });
+        });
+
+        // --- 🖼️ ฟังก์ชันช่วยจัดการแกลเลอรี ---
         function updateGallery() {
             if(projectImages.length > 0) {
                 modalImg.src = projectImages[currentImgIndex]; 
                 modalCounter.textContent = `${currentImgIndex + 1} / ${projectImages.length}`; 
-            } else {
-                modalImg.src = ''; 
-                modalCounter.textContent = '0 / 0'; 
             }
         }
 
-        // --- ⚙️ ฟังก์ชันลูกศรสไลด์รูป ซ้าย-ขวา ---
+        function checkNavButtons() {
+            if(projectImages.length > 1) {
+                prevBtn.classList.add('show');
+                nextBtn.classList.add('show');
+            } else {
+                prevBtn.classList.remove('show');
+                nextBtn.classList.remove('show');
+            }
+        }
+
         const navigateGallery = (direction) => {
-            if(projectImages.length > 0) {
+            if(projectImages.length > 1) {
                 currentImgIndex += direction; 
                 if(currentImgIndex < 0) currentImgIndex = projectImages.length - 1; 
                 if(currentImgIndex >= projectImages.length) currentImgIndex = 0; 
@@ -339,7 +342,6 @@ document.addEventListener('DOMContentLoaded', () => {
         prevBtn.addEventListener('click', (e) => { e.stopPropagation(); navigateGallery(-1); }); 
         nextBtn.addEventListener('click', (e) => { e.stopPropagation(); navigateGallery(1); }); 
 
-        // --- ⚙️ ฟังก์ชันปิด Modal ---
         const closeModal = () => {
             modal.classList.remove('show');
             document.body.style.overflow = '';
@@ -348,7 +350,6 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         closeModalBtn.addEventListener('click', closeModal);
-        
         modal.addEventListener('click', (e) => {
             if(e.target === modal || e.target.classList.contains('modal-gallery-wrapper')) closeModal(); 
         });
